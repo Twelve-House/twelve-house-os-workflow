@@ -1,0 +1,1025 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Twelve House OS Workflow Map</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: full-screen pan/zoom canvas (bands → zones → nodes), floating toolbar, side panel, minimap. */
+:root{
+  --bg:#e9ecf1; --grid:#cfd5df; --panel:#f8f9fb; --line:#d3d9e2; --fg:#18202c; --muted:#5b6678;
+  --zone:#f6f7f9; --zone-line:#c9d0db; --band:#7a8597; --accent:#d2461f; --edge:#7b879a; --halo:#e9ecf1;
+  --act-c:#2a62c9; --act-f:#e6eefc;
+  --sys-c:#4b5568; --sys-f:#ffffff;
+  --evt-c:#7a3fc4; --evt-f:#f1eafb;
+  --st-c:#0f7f73; --st-f:#e2f4f1;
+  --gate-c:#b46a00; --gate-f:#fff3dc;
+  --agt-c:#b5287a; --agt-f:#fbe7f2;
+  --ext-c:#2f7d32; --ext-f:#e7f4e6;
+  --data-c:#3a4f8f; --data-f:#e9ecf7;
+  --stop-c:#c0362c; --stop-f:#fdeceb;
+  --fut-c:#8a93a3; --fut-f:#f3f4f6;
+  --ov-c:#18202c; --ov-f:#ffffff;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121721; --grid:#232b39; --panel:#1a2130; --line:#2c3547; --fg:#e6eaf1; --muted:#9aa4b6;
+  --zone:#171d29; --zone-line:#2f394c; --band:#8994a8; --accent:#ff7a4d; --edge:#6d7a90; --halo:#121721;
+  --act-c:#7aa7ff; --act-f:#1a2740; --sys-c:#aab3c3; --sys-f:#1d2433; --evt-c:#b994f5; --evt-f:#251d38;
+  --st-c:#4fd1bf; --st-f:#112b29; --gate-c:#f2b04c; --gate-f:#2e2412; --agt-c:#f17bbd; --agt-f:#311a29;
+  --ext-c:#7ccf7f; --ext-f:#17291a; --data-c:#93a6e8; --data-f:#1c2340; --stop-c:#ff7f73; --stop-f:#33191a;
+  --fut-c:#7c8597; --fut-f:#1a1f2a; --ov-c:#e6eaf1; --ov-f:#1d2433; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121721; --grid:#232b39; --panel:#1a2130; --line:#2c3547; --fg:#e6eaf1; --muted:#9aa4b6;
+  --zone:#171d29; --zone-line:#2f394c; --band:#8994a8; --accent:#ff7a4d; --edge:#6d7a90; --halo:#121721;
+  --act-c:#7aa7ff; --act-f:#1a2740; --sys-c:#aab3c3; --sys-f:#1d2433; --evt-c:#b994f5; --evt-f:#251d38;
+  --st-c:#4fd1bf; --st-f:#112b29; --gate-c:#f2b04c; --gate-f:#2e2412; --agt-c:#f17bbd; --agt-f:#311a29;
+  --ext-c:#7ccf7f; --ext-f:#17291a; --data-c:#93a6e8; --data-f:#1c2340; --stop-c:#ff7f73; --stop-f:#33191a;
+  --fut-c:#7c8597; --fut-f:#1a1f2a; --ov-c:#e6eaf1; --ov-f:#1d2433; color-scheme:dark}
+
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);overflow:hidden}
+*{box-sizing:border-box}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+#app{position:relative;height:100%;display:flex;flex-direction:column}
+header.top{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-block:10px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  background:var(--panel);border-bottom:1px solid var(--line);z-index:5}
+.brand{min-width:0}
+.brand h1{font-family:var(--f-display);font-weight:700;font-size:18px;margin:0;letter-spacing:-.01em;text-wrap:balance}
+.brand p{margin:2px 0 0;color:var(--muted);font-size:12px}
+.tools{margin-left:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:13px;line-height:1.2}
+.btn:hover{border-color:var(--muted)}
+.btn.icon{width:34px;padding:6px 0;text-align:center;font-weight:600}
+#zoomLabel{font-family:var(--f-mono);font-size:12px;color:var(--muted);min-width:48px;text-align:center;font-variant-numeric:tabular-nums}
+
+#viewport{position:relative;flex:1;overflow:hidden;cursor:grab;touch-action:none;
+  background-color:var(--bg);
+  background-image:radial-gradient(var(--grid) 1px, transparent 1.2px);background-size:24px 24px}
+#viewport.dragging{cursor:grabbing}
+#world{position:absolute;left:0;top:0;transform-origin:0 0}
+#edges{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+
+.band-label{position:absolute;font-family:var(--f-display);font-weight:700;font-size:44px;color:var(--band);letter-spacing:-.02em;white-space:nowrap}
+.zone{position:absolute;background:var(--zone);border:1px solid var(--zone-line);border-radius:18px}
+.zone-h{position:absolute;left:24px;top:16px;right:24px}
+.zone-h h2{margin:0;font-family:var(--f-display);font-weight:700;font-size:22px;letter-spacing:-.01em}
+.zone-h p{margin:3px 0 0;color:var(--muted);font-size:13px;line-height:1.35}
+.zone-tag{font-family:var(--f-mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+
+.node{position:absolute;width:204px;padding:9px 11px 10px;border-radius:6px;background:var(--f);border:1.5px solid var(--c);
+  font-size:12.5px;line-height:1.38;cursor:pointer;transition:opacity .2s, box-shadow .2s}
+.node:hover{box-shadow:0 0 0 3px color-mix(in srgb, var(--c) 25%, transparent)}
+.node .kl{font-family:var(--f-mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--c);margin-bottom:3px;display:flex;justify-content:space-between;gap:6px}
+.node .nt{font-weight:600;font-size:13.5px;line-height:1.28;text-wrap:balance}
+.node .nd{color:var(--muted);margin-top:4px}
+.node code{display:inline-block;margin-top:6px;font-family:var(--f-mono);font-size:10.5px;color:var(--fg);background:color-mix(in srgb, var(--c) 10%, transparent);border-radius:4px;padding:1px 5px;word-break:break-word}
+.k-act{--c:var(--act-c);--f:var(--act-f)}
+.k-sys{--c:var(--sys-c);--f:var(--sys-f)}
+.k-evt{--c:var(--evt-c);--f:var(--evt-f);border-style:dashed}
+.k-st{--c:var(--st-c);--f:var(--st-f);border-radius:22px;padding-left:14px;padding-right:14px}
+.k-gate{--c:var(--gate-c);--f:var(--gate-f);border-width:3px;border-style:double}
+.k-agt{--c:var(--agt-c);--f:var(--agt-f);border-radius:14px 2px 14px 2px}
+.k-ext{--c:var(--ext-c);--f:var(--ext-f)}
+.k-data{--c:var(--data-c);--f:var(--data-f);border-radius:6px 6px 16px 16px}
+.k-stop{--c:var(--stop-c);--f:var(--stop-f);background-image:repeating-linear-gradient(135deg, transparent 0 9px, color-mix(in srgb, var(--stop-c) 9%, transparent) 9px 12px)}
+.k-fut{--c:var(--fut-c);--f:var(--fut-f);border-style:dashed;opacity:.85}
+.k-ov{--c:var(--ov-c);--f:var(--ov-f);border-width:2px;font-size:13px}
+.k-ov .nt{font-family:var(--f-display);font-size:19px;font-weight:700}
+.node .jump{font-family:var(--f-mono);font-size:10px;color:var(--accent);margin-top:6px}
+
+svg .e{fill:none;stroke:var(--edge);stroke-width:1.6}
+svg .e.evt{stroke:var(--evt-c);stroke-dasharray:6 4}
+svg .e.gate{stroke:var(--gate-c);stroke-width:2}
+svg .e.cron{stroke:var(--st-c);stroke-dasharray:2 4;stroke-linecap:round}
+svg .e.neg{stroke:var(--stop-c)}
+svg .e.cross{stroke:var(--accent);stroke-width:2.6;opacity:.55}
+svg .el{font-family:var(--f-mono);font-size:10.5px;fill:var(--muted);paint-order:stroke;stroke:var(--halo);stroke-width:4px;stroke-linejoin:round}
+svg .el.cross{fill:var(--accent);font-size:12px}
+
+/* semantic zoom */
+#world.far .node .nd, #world.far .node code, #world.far .node .jump, #world.far .el{visibility:hidden}
+#world.far .zone-h h2{font-size:34px}
+#world.far .zone-h p{visibility:hidden}
+#world.vfar .node .nt{visibility:hidden}
+#world.vfar .zone-h h2{font-size:56px}
+#world.hide-cross .e.cross, #world.hide-cross .el.cross{display:none}
+#world.hide-labels .el{display:none}
+
+/* focus */
+#world.focus .node{opacity:.18}
+#world.focus .node.hl{opacity:1}
+#world.focus .node.sel{box-shadow:0 0 0 4px var(--accent)}
+#world.focus .e, #world.focus .el{opacity:.08}
+#world.focus .e.hl{opacity:1;stroke-width:3}
+#world.focus .el.hl{opacity:1}
+.node.match{box-shadow:0 0 0 4px var(--accent)}
+
+/* side panel */
+#side{position:absolute;top:12px;left:max(12px, env(safe-area-inset-left,0px));bottom:12px;width:290px;background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  display:flex;flex-direction:column;z-index:4;box-shadow:0 8px 30px rgba(0,0,0,.08);overflow:hidden}
+#side[hidden]{display:none!important}
+.side-sec{padding:12px 14px;border-bottom:1px solid var(--line)}
+.side-sec:last-child{border-bottom:0}
+.side-scroll{overflow:auto;flex:1;min-height:0}
+.side-sec h3{margin:0 0 8px;font-size:11px;font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:500}
+#search{width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg)}
+#results{margin-top:6px;display:grid;gap:2px}
+#results button,.zlist button{display:block;width:100%;text-align:left;border:0;background:none;padding:5px 6px;border-radius:6px;cursor:pointer;font-size:12.5px}
+#results button:hover,.zlist button:hover{background:var(--bg)}
+#results small,.zlist small{color:var(--muted);font-size:11px}
+.zlist .bandh{font-family:var(--f-display);font-weight:700;font-size:13px;margin:8px 0 2px;color:var(--fg)}
+.zlist .bandh:first-child{margin-top:0}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:6px 8px}
+.lg{display:flex;align-items:center;gap:6px;font-size:12px}
+.sw{width:22px;height:14px;flex:none;background:var(--f);border:1.5px solid var(--c);border-radius:3px}
+.sw.k-st{border-radius:8px}.sw.k-gate{border-width:3px;border-style:double}.sw.k-evt,.sw.k-fut{border-style:dashed}
+.sw.k-stop{background-image:repeating-linear-gradient(135deg, transparent 0 3px, color-mix(in srgb, var(--stop-c) 30%, transparent) 3px 5px)}
+.elg{display:grid;gap:5px;margin-top:10px}
+.elg div{display:flex;align-items:center;gap:8px;font-size:12px}
+.elg svg{flex:none}
+.toggle{display:flex;align-items:center;gap:8px;font-size:12.5px;margin-top:4px;cursor:pointer}
+.hint{font-size:12px;color:var(--muted);line-height:1.45;margin:0}
+kbd{font-family:var(--f-mono);font-size:11px;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 4px;background:var(--bg)}
+
+/* info card */
+#info{position:absolute;right:max(12px, env(safe-area-inset-right,0px));top:12px;width:330px;max-height:calc(100% - 200px);overflow:auto;background:var(--panel);border:1px solid var(--line);
+  border-radius:12px;padding:14px 16px;z-index:4;box-shadow:0 8px 30px rgba(0,0,0,.1)}
+#info .ik{font-family:var(--f-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.09em}
+#info h4{margin:4px 0 6px;font-family:var(--f-display);font-size:19px;line-height:1.2;text-wrap:balance}
+#info .iz{font-size:12px;color:var(--muted)}
+#info p{font-size:13px;line-height:1.5;margin:8px 0}
+#info code{font-family:var(--f-mono);font-size:11.5px;background:var(--bg);border-radius:4px;padding:1px 5px;word-break:break-word}
+#info ul{list-style:none;padding:0;margin:4px 0 8px;display:grid;gap:2px}
+#info li button{border:0;background:none;padding:3px 4px;border-radius:5px;cursor:pointer;text-align:left;font-size:12.5px;width:100%}
+#info li button:hover{background:var(--bg)}
+#info li small{color:var(--muted);font-family:var(--f-mono);font-size:10.5px}
+#info .ih{font-size:11px;font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-top:10px}
+#info .close{position:absolute;right:8px;top:8px}
+
+#mini{position:absolute;right:max(12px, env(safe-area-inset-right,0px));bottom:12px;background:var(--panel);border:1px solid var(--line);border-radius:10px;z-index:3;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.08)}
+#mini canvas{display:block;border-radius:10px}
+
+@media (max-width:760px){
+  #side{left:8px;right:8px;width:auto;top:auto;bottom:8px;max-height:55%}
+  #info{left:8px;right:8px;width:auto;top:8px;max-height:45%}
+  #mini{display:none}
+  .brand p{display:none}
+}
+@media (prefers-reduced-motion: reduce){.node{transition:none}}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <div class="brand">
+      <h1>Twelve House OS · System Workflow</h1>
+      <p>Lead → deal → contract → project → delivery → portal → support, plus the platform underneath. Status as of 2 Nov 2026.</p>
+    </div>
+    <div class="tools">
+      <button class="btn" id="btnSide" aria-pressed="true">Panel</button>
+      <button class="btn icon" id="btnOut" aria-label="Zoom out">−</button>
+      <span id="zoomLabel">100%</span>
+      <button class="btn icon" id="btnIn" aria-label="Zoom in">+</button>
+      <button class="btn" id="btnFit">Fit all</button>
+      <button class="btn" id="btn100">100%</button>
+    </div>
+  </header>
+
+  <div id="viewport" tabindex="0" aria-label="Workflow canvas. Drag to pan, scroll or pinch to zoom.">
+    <div id="world">
+      <svg id="edges" xmlns="http://www.w3.org/2000/svg">
+        <defs></defs>
+        <g id="edgeG"></g>
+        <g id="labelG"></g>
+      </svg>
+    </div>
+
+    <aside id="side" aria-label="Navigator">
+      <div class="side-sec">
+        <h3>Find a step</h3>
+        <input id="search" type="search" placeholder="e.g. deal.won, vault, briefing" autocomplete="off">
+        <div id="results"></div>
+      </div>
+      <div class="side-scroll">
+        <div class="side-sec">
+          <h3>Areas · click to fly</h3>
+          <div class="zlist" id="zlist"></div>
+        </div>
+        <div class="side-sec">
+          <h3>Legend · node types</h3>
+          <div class="legend" id="legend"></div>
+          <div class="elg">
+            <div><svg width="40" height="8"><line x1="0" y1="4" x2="40" y2="4" style="stroke:var(--edge);stroke-width:1.6"/></svg>Direct step</div>
+            <div><svg width="40" height="8"><line x1="0" y1="4" x2="40" y2="4" style="stroke:var(--evt-c);stroke-width:1.6;stroke-dasharray:6 4"/></svg>Async outbox event</div>
+            <div><svg width="40" height="8"><line x1="0" y1="4" x2="40" y2="4" style="stroke:var(--gate-c);stroke-width:2"/></svg>Through an approval</div>
+            <div><svg width="40" height="8"><line x1="0" y1="4" x2="40" y2="4" style="stroke:var(--st-c);stroke-width:1.6;stroke-dasharray:2 4;stroke-linecap:round"/></svg>Daily run (scheduled)</div>
+            <div><svg width="40" height="8"><line x1="0" y1="4" x2="40" y2="4" style="stroke:var(--stop-c);stroke-width:1.6"/></svg>Reject / lost / cancel</div>
+            <div><svg width="40" height="8"><line x1="0" y1="4" x2="40" y2="4" style="stroke:var(--accent);stroke-width:2.6;opacity:.7"/></svg>Link between areas</div>
+          </div>
+        </div>
+        <div class="side-sec">
+          <h3>View</h3>
+          <label class="toggle"><input type="checkbox" id="tCross" checked> Links between areas</label>
+          <label class="toggle"><input type="checkbox" id="tLabels" checked> Edge labels</label>
+        </div>
+        <div class="side-sec">
+          <h3>Controls</h3>
+          <p class="hint">Drag to pan. Scroll wheel or pinch to zoom, two-finger trackpad scroll pans. Click a step to trace its connections; <kbd>Esc</kbd> clears. <kbd>+</kbd> <kbd>−</kbd> zoom, <kbd>0</kbd> fits, arrow keys pan. Zoom out and details fold away; zoom in to read routes and rules.</p>
+        </div>
+      </div>
+    </aside>
+
+    <div id="info" hidden></div>
+    <div id="mini"><canvas id="miniC" width="220" height="150" aria-label="Minimap"></canvas></div>
+  </div>
+</div>
+
+<script>
+/* ---------- data ---------- */
+const KINDS = {
+  act:{label:'Human action / screen'}, sys:{label:'System (automatic)'}, evt:{label:'Outbox event'},
+  st:{label:'Status'}, gate:{label:'Decision / gate'}, agt:{label:'AI agent'}, ext:{label:'External service'},
+  data:{label:'Data / store'}, stop:{label:'Paused / stopped'}, fut:{label:'Planned (P5/P6)'}, ov:{label:'Overview'}
+};
+
+const BANDS = [
+  {title:'Lifecycle at a glance', zones:['overview']},
+  {title:'A · Platform core', zones:['access','request','events','approvals','infra']},
+  {title:'B · Win the client', zones:['intake','leads','outreach','crm','deals','contracts']},
+  {title:'C · Deliver the work', zones:['projcreate','projlife','briefing','deliverables','updates','collab','payments']},
+  {title:'D · Client side', zones:['portalaccess','portalux','support','chat']},
+  {title:'E · Automation & oversight', zones:['daily','agents','notify','roadmap']},
+];
+
+/* node: [id, col, row, kind, title, detail, code, span] ; edge: [from, to, label, style] */
+const ZONES = {
+overview:{title:'Client lifecycle', tag:'start here', sub:'The main path through the system. Click a stage to fly to its detail area.',
+ nodes:[
+  ['lead',0,0,'ov','Lead','Found by lead-hunter, Apollo or CSV import. Pre-filtered, owned, followed up.',null,1,'leads'],
+  ['deal',1,0,'ov','Deal','Opportunity on the pipeline with stage, value and probability.',null,1,'deals'],
+  ['offer',2,0,'ov','Offer','Frozen terms wrapping a contract draft; accept wins the deal.',null,1,'deals'],
+  ['contract',3,0,'ov','Contract','Services × term (3/6/12 mo). Special price needs finance approval.',null,1,'contracts'],
+  ['project',4,0,'ov','Project','Created automatically from service templates with tasks and payment plan.',null,1,'projcreate'],
+  ['deliver',5,0,'ov','Delivery','Briefing, deliverable versions, internal approval, client updates.',null,1,'deliverables'],
+  ['portal',6,0,'ov','Client portal','Client sees progress, decides on deliverables, pays, messages.',null,1,'portalux'],
+  ['support',7,0,'ov','Support & renewal','Tickets, contract ending → renewal task → new contract draft.',null,1,'support'],
+  ['plat',0,1,'ov','Every action, every time','Request → session → policy guard → one transaction that writes the change, the audit row and an outbox event. Handlers turn events into tasks, notifications, approvals or agent runs.',null,3,'request'],
+  ['human',3,1,'ov','Human control','Anything client-facing, public, spending or financial waits for an approval decided by someone else.',null,2,'approvals'],
+  ['auto',5,1,'ov','Daily run 06:30 UTC','Agents, contract activation, nudges, payment reminders, file cleanup, briefing reminders, due-date sweep.',null,3,'daily'],
+ ],
+ edges:[['lead','deal'],['deal','offer'],['offer','contract'],['contract','project','signed'],['project','deliver'],['deliver','portal','shared'],['portal','support'],['support','contract','renew','evt']]},
+
+access:{title:'Roles & access', tag:'RBAC v2', sub:'Six fixed roles, department is a separate attribute. Backend sends keys, UI translates (de/en/tr).',
+ nodes:[
+  ['admin',0,0,'act','admin (leadership)','Everything. Decides approvals, project.manage, vault admin.'],
+  ['dlead',1,0,'act','department_lead','Scope "department" for own departments.'],
+  ['emp',2,0,'act','employee','Scope "assigned": own leads, deals, tasks, contracts.'],
+  ['free',0,1,'fut','freelancer','Role defined; screens come later.'],
+  ['client',1,1,'act','client','Portal only. 403 on every team route; company_id required.'],
+  ['agent',2,1,'agt','agent','Service identity. Actor set by AgentRunner. No deal rights.'],
+  ['dept',0,2,'data','8 departments','sales · account_management · marketing · content · fulfillment · support · controlling · people',null,1],
+  ['scopes',1,2,'gate','Permission scope','all / department / assigned. Outside your scope = 404, never 403.','lead.read · deal.write · task.assign …'],
+  ['mfa',2,2,'gate','2FA (TOTP)','Opt-in for every role. Company rule requiredForAll. Disable needs password + code.','/api/auth/mfa/*'],
+ ],
+ edges:[['admin','scopes','',''],['dlead','scopes'],['emp','scopes'],['dept','scopes','department scope']]},
+
+request:{title:'Request path', tag:'every action', sub:'Browser → Next.js → NestJS. One transaction per change: domain write + audit + outbox.',
+ nodes:[
+  ['browser',0,0,'act','Browser','Next.js 16 + next-intl (de/en/tr), routes shown by role.'],
+  ['proxy',1,0,'sys','Next.js proxy','Checks session on every page.','GET /api/auth/session'],
+  ['login',2,0,'act','Sign in','Password (+ TOTP if on) → cookie th_sid. Invite, reset, bootstrap CLI.','/anmelden'],
+  ['ctx',0,1,'sys','RequestContext','requestId, ip, AsyncLocalStorage.'],
+  ['sess',1,1,'sys','SessionGuard','actor = user | agent | null.'],
+  ['policy',2,1,'gate','PolicyGuard','@Public · @Authenticated · @Requires(p) · @Portal. A route without policy stops boot. Missing permission → 403 + audit access.denied. MFA pending → 403 MFA_REQUIRED.'],
+  ['svc',0,2,'sys','Controller → Service','Validation pipe, scope checks (out of scope → 404).'],
+  ['tx',1,2,'data','prisma.$transaction','Domain write + audit.record (before/after) + events.emit (outbox row). All or nothing.'],
+  ['err',2,2,'sys','Error filter','Every error: { ok:false, fehler, code }. UI translates the code.','VALIDATION_FAILED · FORBIDDEN …'],
+ ],
+ edges:[['browser','proxy'],['proxy','login','401','neg'],['login','browser','th_sid'],['browser','ctx','/api/* + cookie'],['ctx','sess'],['sess','policy'],['policy','svc','allowed'],['policy','err','403','neg'],['svc','tx'],['svc','err','4xx','neg']]},
+
+events:{title:'Event pipeline', tag:'transactional outbox', sub:'Side effects run after commit, idempotently, with retries.',
+ nodes:[
+  ['outbox',0,0,'data','outbox_events','Row written in the same transaction as the change. Status pending.'],
+  ['worker',1,0,'sys','OutboxWorker','Every 2 s (TH_WORKER=on). Claims ≤ 50 rows, FOR UPDATE SKIP LOCKED, lease 60 s.'],
+  ['deliv',2,0,'data','outbox_deliveries','Unique (event, handler). Already done → skip.'],
+  ['handler',0,1,'sys','Handler','Runs in its own transaction, actor = system:&lt;handler&gt;.'],
+  ['retry',1,1,'stop','Retry → dead','Fail: retry after 2ⁿ·10 s (max 1 h). 10 attempts → dead → outbox.dead to system.ops.'],
+  ['rule',2,1,'gate','Rule','Handlers never call providers. External effects only in an executor that finds an approved approval for the exact subject + hash.'],
+  ['eff1',0,2,'sys','Tasks & notifications','e.g. task.assigned, briefing.submitted, payment.due_soon'],
+  ['eff2',1,2,'gate','Approval requests','e.g. deliverable.share, update.release'],
+  ['eff3',2,2,'agt','Queue an AgentRun','Long agents wait for the daily run.'],
+ ],
+ edges:[['outbox','worker'],['worker','deliv','check'],['deliv','handler','not done'],['handler','retry','error','neg'],['retry','handler','backoff'],['handler','eff1'],['handler','eff2'],['handler','eff3']]},
+
+approvals:{title:'Approval engine', tag:'human control', sub:'Modules request, a different person decides. A hash pins exactly what was approved.',
+ nodes:[
+  ['req',0,0,'sys','request()','Only from code (agents, modules); no endpoint. Stores action, category, subject + subjectHash.','ApprovalsService.request'],
+  ['pending',1,0,'st','pending','approval.requested → notify holders of approval.decide.&lt;category&gt;.'],
+  ['cats',2,0,'data','Categories','internal · client_facing · publish · spend · finance'],
+  ['decide',0,1,'gate','Decide','Approve or reject with expectedHash. Own request → 403 SELF_APPROVAL. Changed subject → 409 SUBJECT_CHANGED.','POST /api/approvals/:id/decide'],
+  ['ok',1,1,'st','approved',''],
+  ['no',2,1,'st','rejected',''],
+  ['users',0,2,'data','Who asks','contract.price (finance) · deliverable.share, update.release (client_facing) · ad_campaign.start (spend)'],
+  ['exp',1,2,'st','cancelled / expired','Requester or decider cancels; expiresAt passes.'],
+  ['dec',2,2,'evt','approval.decided','The subject module applies or abandons; requester notified.'],
+ ],
+ edges:[['req','pending'],['pending','decide'],['decide','ok','approve','gate'],['decide','no','reject','neg'],['pending','exp','cancel / expire','neg'],['ok','dec'],['no','dec'],['users','req']]},
+
+infra:{title:'Infrastructure & integrations', tag:'runtime', sub:'Two repos side by side, Postgres, object storage, mail, messaging.',
+ nodes:[
+  ['fe',0,0,'sys','Frontend repo','Next.js 16, Tailwind v4, form kit, next-intl.','twelve-house-os-frontend'],
+  ['be',1,0,'sys','Backend repo','NestJS 12 + Prisma 7, one schema file per table, migrations 001–034.','twelve-house-os-backend'],
+  ['db',2,0,'data','PostgreSQL ≥ 16','Supabase eu-west-1 (prod) and staging DB. RLS role th_portal.'],
+  ['coolify',0,1,'ext','Coolify staging','twelve-os(.api).twahanur.dev. Deploys from main on merge.'],
+  ['minio',1,1,'ext','MinIO (S3)','Project files, presigned POST upload and short-lived GET links.','FILES_S3_*'],
+  ['smtp',2,1,'ext','SMTP','Portal invites, update mails, message mails, briefing reminders.','SMTP_URL · MAIL_FROM'],
+  ['tg',0,2,'stop','Telegram bot','@twelvehouse_os_bot — webhook removed 05.10., notify chats empty.'],
+  ['apollo',1,2,'stop','Apollo.io','Sequences + reply webhook. Outreach stopped since 20.09.'],
+  ['cu',2,2,'ext','ClickUp','Work tracking via tools/clickup.py (free tier).'],
+ ],
+ edges:[['fe','be','/api/*'],['be','db'],['be','minio'],['be','smtp']]},
+
+intake:{title:'Lead sources & intake', tag:'/leads', sub:'Every lead enters with stage "neu" and no owner, then sales picks it up.',
+ nodes:[
+  ['hunter',0,0,'agt','lead-hunter','Takes harvest output, checks deliverability, writes new businesses into leads, tells outreach.'],
+  ['csv',1,0,'act','CSV import','Hunting team uploads a file. Result per row: neu · bestand · doppelt · ungueltig.','POST /api/admin/leads/import'],
+  ['apo',2,0,'ext','Apollo contacts','1,269 leads carry an Apollo id.'],
+  ['vorf',0,1,'gate','Pre-filter (5 stages)','Form · lists · memory · DNS · verify service. Without TH_PRUEFDIENST nothing gets "frei", so nothing is enrolled.'],
+  ['pool',1,1,'data','leads · unassigned pool','4,592 leads, 70 % Turkey. Stage neu, no owner.'],
+  ['assign',2,1,'act','Assign owner','Action "zustaendig" sets an active human as owner.'],
+  ['fc',2,2,'evt','first_contact follow-up','Task due next workday 10:00 (Istanbul), priority high, one per lead.'],
+ ],
+ edges:[['hunter','vorf'],['apo','vorf'],['vorf','pool','frei'],['csv','pool'],['pool','assign'],['assign','fc','owner set']]},
+
+leads:{title:'Lead pipeline & follow-ups', tag:'/leads · /wiedervorlagen · /anrufliste', sub:'Stage keys are data keys and stay German. A follow-up is just a task on the lead.',
+ nodes:[
+  ['neu',0,0,'st','neu','New, maybe unassigned.'],
+  ['kont',1,0,'st','kontaktiert','Closes the open first-contact task.'],
+  ['term',2,0,'st','termin','Meeting booked.'],
+  ['ang',3,0,'st','angebot','Offer stage.'],
+  ['verl',0,1,'st','verloren','All open follow-ups discarded.'],
+  ['calls',1,1,'act','Call list','Log a call. Outcome creates call_back or retry follow-up. Do-not-call respected.','/anrufliste'],
+  ['wv',2,1,'act','Follow-ups','Tasks with entityType lead: first_contact · call_back · retry · nudge · manual. Done / reschedule / discard.','PATCH /api/tasks/:id'],
+  ['kunde',3,1,'st','kunde','Won. Open follow-ups discarded.'],
+  ['nudge',0,2,'sys','Daily nudge','Open lead in kontaktiert | termin | angebot, owner set, no follow-up, 7 days quiet → nudge today 17:00.'],
+  ['tl',1,2,'data','Activity timeline','lead_activities + audit. Every stage change emits lead.status_changed.'],
+  ['handover',2,2,'sys','Owner change','Open and unassigned follow-ups move to the new owner.'],
+ ],
+ edges:[['neu','kont','first contact'],['kont','term'],['term','ang'],['ang','kunde','won'],['kont','verl','lost','neg'],['calls','wv','call_back / retry'],['nudge','wv','nudge','cron'],['wv','kont','contacted'],['handover','wv']]},
+
+outreach:{title:'Outreach & calling', tag:'stopped', sub:'Real mail to real people only with explicit leadership approval (FREIGABEN 0, 2, 11).',
+ nodes:[
+  ['pilot',0,0,'stop','outreach-pilot','Enrolls cleared leads into the Apollo sequence. Stopped since 20.09. after 13.7 % hard bounces.'],
+  ['brk',1,0,'gate','Circuit breaker','Counts bounces of the last 14 days. Limit max(2, 4 %).'],
+  ['seq',2,0,'ext','Apollo sequence','Sends real emails. Steps 2 and 5 still "to_be_reviewed".'],
+  ['sender',0,1,'stop','Before restart','Role mailbox + team signature, verify service set, 142 labels reconciled.'],
+  ['calling',1,1,'agt','calling-agent','Builds only the list of whom one would call. No dialing: telephony and legal approval missing.'],
+  ['reply',2,1,'sys','Apollo reply webhook','Writes replies and bounces to outreach_events.','POST /api/webhooks/apollo-reply?key='],
+ ],
+ edges:[['pilot','brk'],['brk','seq','under limit'],['seq','reply','replies / bounces'],['reply','brk','feeds','evt'],['sender','pilot','unblocks']]},
+
+crm:{title:'Companies & contacts', tag:'/firmen', sub:'Company status follows contracts and cannot be set by hand.',
+ nodes:[
+  ['link',0,0,'act','Link lead ↔ company','Pick a company or create one from the lead (reuses same domain).','PUT /api/crm/leads/:id/company'],
+  ['company',1,0,'data','Company','Name, normalised unique website, market TR | DE, owner.'],
+  ['contact',2,0,'data','Contacts','Email unique per company. consentEmail / consentPhone gate mail and WhatsApp.'],
+  ['prospect',0,1,'st','prospect',''],
+  ['client',1,1,'st','client','A contract is signed or active.'],
+  ['former',2,1,'st','former','All contracts ended.'],
+  ['inv',2,2,'act','Invite to portal','Turn a contact into a client account.','POST …/portal-invites'],
+ ],
+ edges:[['link','company'],['company','contact'],['prospect','client','contract signed'],['client','former','contracts ended'],['contact','inv']]},
+
+deals:{title:'Deals & offers', tag:'/deals', sub:'Each stage sets a default probability. Concurrent steps lock; a lost race is 409.',
+ nodes:[
+  ['create',0,0,'act','Create deal','Company, currency EUR | TRY, value, expected close, owner.','POST /api/crm/deals'],
+  ['q',1,0,'st','qualified · 10 %',''],
+  ['m',2,0,'st','meeting · 25 %',''],
+  ['p',3,0,'st','proposal · 50 %',''],
+  ['n',4,0,'st','negotiation · 75 %',''],
+  ['lost',1,1,'st','lost · 0 %','Reason: price · timing · competitor · no_response · not_a_fit · other.'],
+  ['reopen',2,1,'act','Reopen','Only from lost. Loss stays in the timeline.'],
+  ['won',4,1,'st','won · 100 %','Value = contract total of the accepted offer.'],
+  ['od',1,2,'st','offer: draft','Wraps a contract draft. One open offer per deal.'],
+  ['os',2,2,'st','offer: sent','Freezes terms + contract hash. Deal in qualified/meeting jumps to proposal.'],
+  ['oa',3,2,'st','offer: accepted',''],
+  ['ow',1,3,'st','withdrawn',''],
+  ['odec',2,3,'st','declined',''],
+  ['wonEvt',4,2,'evt','deal.won','{ dealId, companyId, offerId, contractId, valueCents }'],
+ ],
+ edges:[['create','q'],['q','m'],['m','p'],['p','n'],['n','won'],['q','lost','lost','neg'],['lost','reopen'],['reopen','q','back to open stage'],['od','os','send'],['os','p','moves deal','evt'],['os','oa','accept'],['os','odec','decline','neg'],['od','ow','withdraw','neg'],['oa','won','wins deal'],['won','wonEvt']]},
+
+contracts:{title:'Services & contracts', tag:'/leistungen · /vertraege', sub:'Money in whole cents, discounts in basis points. Prices freeze on signing.',
+ nodes:[
+  ['cat',0,0,'data','Service catalog','Localized names; monthly price per currency × 3/6/12 months; returning-client discount rule.','/api/services'],
+  ['quote',1,0,'act','Quote preview','Computes base, discount, monthly and contract total. Saves nothing.','POST /api/contracts/quote'],
+  ['draft',2,0,'st','draft','Editable. A changed "ready" contract drops back here.'],
+  ['special',3,0,'gate','Special price?','Manual price or discount above the default.'],
+  ['pend',4,0,'st','pending_approval','Approval contract.price (finance).'],
+  ['renew',0,1,'act','Renew','New draft from the day after the end, today’s list prices. Only from active or ended.'],
+  ['cancel',2,1,'st','cancelled','From draft, pending, ready, signed or active, with reason.'],
+  ['ready',4,1,'st','ready',''],
+  ['ending',0,2,'sys','Ending soon','Daily: active, no renewal, ≤ 30 days left → high-priority task "renew contract".'],
+  ['ended',1,2,'st','ended','End date passed (daily run).'],
+  ['active',2,2,'st','active','Start date reached (daily run or at signing).'],
+  ['signed',4,2,'st','signed','Prices frozen. Overlapping service for same company → 409 SERVICE_OVERLAP.'],
+ ],
+ edges:[['cat','quote'],['quote','draft'],['draft','special','finalize'],['special','pend','yes','gate'],['special','ready','no'],['pend','ready','approved','gate'],['pend','draft','withdraw / rejected','neg'],['ready','signed','sign'],['signed','active','start ≤ today','cron'],['active','ended','end < today','cron'],['active','ending','≤ 30 days','cron'],['ending','renew'],['renew','draft','new draft'],['ready','cancel','cancel','neg']]},
+
+projcreate:{title:'Project creation', tag:'automatic', sub:'Signed or active contract with a monthly total > 0 creates the project. Renewals attach to the existing one.',
+ nodes:[
+  ['trig',0,0,'evt','Trigger events','deal.won · contract.signed · contract.activated'],
+  ['manual',1,0,'act','Manual create','From a won deal, then edit title and due date.','POST /api/projects'],
+  ['tmpl',2,0,'data','Templates per service','draft → published → retired. Steps + briefing fields.','/vorlagen'],
+  ['create',0,1,'sys','Create project','One project per contract; uses the published template of each service.'],
+  ['members',1,1,'sys','Owner & members','Projects without owner show in the needsOwner filter.'],
+  ['pcEvt',2,1,'evt','project.created','Notifies account management and fulfillment.'],
+  ['tasks',0,2,'sys','Tasks from steps','Dependencies, milestones, clientVisible flag, assigned by role.'],
+  ['plan',1,2,'sys','Payment plan','Instalments from the contract: seq, due date, amount.'],
+ ],
+ edges:[['trig','create'],['manual','create'],['tmpl','create','steps'],['create','members'],['create','pcEvt'],['create','tasks'],['create','plan']]},
+
+projlife:{title:'Project lifecycle', tag:'/projekte', sub:'A task is "blocked" while a predecessor is open. Blockers are team-only, the portal never reads them.',
+ nodes:[
+  ['setup',0,0,'st','setup','Waiting for briefing.'],
+  ['ready',1,0,'st','ready','Briefing complete.'],
+  ['prog',2,0,'st','in_progress',''],
+  ['review',3,0,'st','review',''],
+  ['cancel',0,1,'st','cancelled',''],
+  ['tasks',1,1,'sys','Task flow','open → in_progress → done; blocked while a predecessor is open → task.unblocked.'],
+  ['wait',2,1,'st','waiting_client','Shows in the blocked_projects widget.'],
+  ['rule',3,1,'gate','Close rule','done / cancelled / reopen need project.manage. Open tasks → 409 PROJECT_HAS_OPEN_TASKS.'],
+  ['blocker',0,2,'act','Blockers','Raise, update, resolve with owner + reason. Older than 3 days → dashboard attention.'],
+  ['hist',1,2,'data','History tab','Audit timeline incl. deliverables, updates, files, messages.'],
+  ['done',3,2,'st','done','project.completed'],
+ ],
+ edges:[['setup','ready','briefing complete'],['ready','prog'],['prog','review'],['review','wait','needs client'],['wait','prog','client answered'],['review','rule'],['rule','done'],['setup','cancel','cancel','neg']]},
+
+briefing:{title:'Briefing', tag:'staff + portal', sub:'Fields are the union of all template briefing fields used by the project.',
+ nodes:[
+  ['draft',0,0,'st','draft','Answers saved, missing required keys listed.'],
+  ['staff',1,0,'act','Team fills in','Replaces all answers; unknown key → 400 BRIEFING_INVALID.','PUT /api/projects/:id/briefing'],
+  ['client',2,0,'act','Client fills in','In the portal while status is draft.'],
+  ['remind',0,1,'sys','Daily reminder','Project ≥ 2 days old, required fields missing, active client account → email (capped).'],
+  ['submit',1,1,'act','Submit','Team may submit with gaps. Portal needs it complete (409 BRIEFING_INCOMPLETE).'],
+  ['sub',2,1,'st','submitted',''],
+  ['evt',2,2,'evt','briefing.submitted','Notifies leadership + members. setup → ready only if nothing is missing.'],
+ ],
+ edges:[['draft','submit'],['staff','submit'],['client','submit'],['remind','client','email','cron'],['submit','sub'],['sub','evt']]},
+
+deliverables:{title:'Deliverables & versions', tag:'internal review → client', sub:'Versions are frozen. Only the latest approval of the current version counts.',
+ nodes:[
+  ['create',0,0,'act','Create deliverable','Optionally linked to a project task.','POST /api/projects/:id/deliverables'],
+  ['draft',1,0,'st','draft',''],
+  ['ver',2,0,'act','Add version','Links, notes, up to 20 ready files. Accepted → 409.','POST /api/deliverables/:id/versions'],
+  ['submit',3,0,'act','Submit for review','Approval deliverable.share (client_facing) on this version.','POST …/submit'],
+  ['rev',4,0,'st','in_review',''],
+  ['cchg',0,1,'st','client_changes_requested',''],
+  ['chg',1,1,'st','changes_requested','Linked task reopens; assignee and author notified.'],
+  ['appr',3,1,'st','approved_internal',''],
+  ['gate',4,1,'gate','Approval decided','Handler on approval.decided.'],
+  ['acc',0,2,'st','accepted','Client accepted.'],
+  ['cdec',1,2,'gate','Client decides','In the portal → deliverable.client_decided.'],
+  ['shared',2,2,'st','shared','sharedVersionId, sharedAt.'],
+  ['share',3,2,'act','Share with client','Needs approved_internal + valid approval.','POST …/share'],
+ ],
+ edges:[['create','draft'],['draft','ver'],['ver','submit'],['submit','rev'],['rev','gate'],['gate','appr','approve','gate'],['gate','chg','reject','neg'],['chg','ver','new version'],['appr','share'],['share','shared'],['shared','cdec'],['cdec','acc','accept'],['cdec','cchg','request changes','neg'],['cchg','chg','rework']]},
+
+updates:{title:'Client updates & reports', tag:'approval before release', sub:'Hash covers the full content; editing after approval needs a new approval.',
+ nodes:[
+  ['draft',0,0,'st','draft','kind update | report, markdown body, optional period.'],
+  ['submit',1,0,'act','Submit','Approval update.release (client_facing).','POST /api/updates/:id/submit'],
+  ['rev',2,0,'st','in_review',''],
+  ['gate',3,0,'gate','Decision',''],
+  ['relS',1,1,'st','released','Event update.released → portal + client notification.'],
+  ['rel',2,1,'act','Release','Only approved, with valid approval.'],
+  ['appr',3,1,'st','approved',''],
+  ['pdf',0,2,'sys','PDF','Any status, "Entwurf" line if unreleased. Language by market: TR → tr, else de.'],
+  ['mail',1,2,'ext','Email','Contacts with consentEmail + address. Logged as sent / failed.'],
+  ['wa',2,2,'act','WhatsApp','wa.me links for consentPhone contacts; "sent" logged by hand.'],
+ ],
+ edges:[['draft','submit'],['submit','rev'],['rev','gate'],['gate','appr','approve','gate'],['gate','draft','reject','neg'],['appr','rel'],['rel','relS'],['relS','mail'],['relS','wa']]},
+
+collab:{title:'Vault, files & messages', tag:'collaboration', sub:'Secrets never appear in lists, audit, events, notifications or errors.',
+ nodes:[
+  ['hand',0,0,'act','Client hands over access','From the portal → credential with source client.'],
+  ['vault',1,0,'data','Credential vault','Secret + notes sealed with TH_VAULT_KEY. 503 without the key.','/api/projects/:id/credentials'],
+  ['reveal',2,0,'gate','Reveal','Vault admin, or the human assigned to an open attached task (+ 2FA passed). Audit credential.revealed.','POST /api/credentials/:id/reveal'],
+  ['up',0,1,'act','Upload','Presigned POST straight to MinIO, ≤ 100 MB.'],
+  ['done',1,1,'sys','Complete','HEAD checks size and type → ready; otherwise object deleted, 400 FILE_UPLOAD_INCOMPLETE.'],
+  ['vis',2,1,'data','files','Visibility internal | client, source staff | client. Download via short-lived link.'],
+  ['clean',0,2,'sys','Daily cleanup','Pending uploads older than 24 h removed with their object.'],
+  ['msg',1,2,'act','Project messages','Client thread + internal notes. Agents may only post internal.'],
+ ],
+ edges:[['hand','vault'],['vault','reveal'],['up','done'],['done','vis'],['clean','vis','purge pending','cron']]},
+
+payments:{title:'Payments', tag:'/zahlungen', sub:'Amounts are null for anyone without payment.read or contract.read.',
+ nodes:[
+  ['planned',0,0,'st','planned',''],
+  ['paid',1,0,'st','paid','paidAt, paidBy recorded by a person.'],
+  ['canc',2,0,'st','cancelled',''],
+  ['over',0,1,'st','overdue','planned and due day before today (Istanbul).'],
+  ['daily',1,1,'sys','Daily payments step','payment.due_soon notices; overdue → task.'],
+  ['widget',2,1,'sys','payments_due widget','Overdue or due within 7 days.'],
+  ['portal',0,2,'sys','Portal view','Instalments with amounts (leadership decision 30.10.).'],
+  ['p6',1,2,'fut','Invoices (P6)','From accounting provider; "paid" only via callback or finance.manage.'],
+ ],
+ edges:[['planned','paid','record'],['planned','canc','cancel','neg'],['planned','over','date passes','cron'],['over','daily'],['daily','widget']]},
+
+portalaccess:{title:'Portal access & isolation', tag:'/api/portal/*', sub:'Row-level security keeps each client inside its own company.',
+ nodes:[
+  ['inv',0,0,'act','Team invites','contactId or email. Locale TR → tr, else de. Needs TH_PUBLIC_URL.','POST …/portal-invites'],
+  ['invited',1,0,'st','invited',''],
+  ['active',2,0,'st','active','Password set via invite link.'],
+  ['guard',0,1,'gate','@Portal() boundary','PolicyBootCheck blocks portal routes without it. Clients get 403 on team routes.'],
+  ['rls',1,1,'data','portalTx + RLS','set app.company_id, SET LOCAL ROLE th_portal → policies on companies, projects and below.'],
+  ['dis',2,1,'st','disabled','All sessions end; next call 401.'],
+  ['tests',0,2,'sys','Tenancy tests','Company B using ids of company A → 404 on every portal route.',null,2],
+ ],
+ edges:[['inv','invited'],['invited','active','accept invite'],['active','dis','disable','neg'],['dis','active','enable'],['active','guard','every request'],['guard','rls'],['rls','tests']]},
+
+portalux:{title:'What the client does', tag:'/portal', sub:'Project list and detail never show money; payments do.',
+ nodes:[
+  ['dash',0,0,'act','Projects','Progress done/total, next milestone, client-visible steps.'],
+  ['brief',1,0,'act','Briefing','Fill in and submit.'],
+  ['deliv',2,0,'act','Deliverables','Shared versions: accept or request changes.'],
+  ['upd',0,1,'act','Updates & reports','Released only.'],
+  ['pay',1,1,'act','Payments','Instalments with amounts, planned / overdue / paid.'],
+  ['msg',2,1,'act','Messages & files','Thread with the team; files with client visibility.'],
+  ['cred',0,2,'act','Hand over access','Credentials into the vault.'],
+  ['tick',1,2,'act','Support tickets','Open and follow tickets.'],
+  ['notif',2,2,'sys','Client notifications','In-app + email.'],
+ ],
+ edges:[]},
+
+support:{title:'Support tickets', tag:'/support', sub:'Team sets any status; the client changes it only by writing.',
+ nodes:[
+  ['new',0,0,'act','Client opens ticket','Subject, category, body, optional project. 30 POST/min.','POST /api/portal/tickets'],
+  ['open',1,0,'st','open',''],
+  ['prog',2,0,'st','in_progress',''],
+  ['wait',3,0,'st','waiting_client',''],
+  ['evt',0,1,'evt','ticket.created · message_posted','Notifies support.manage holders.'],
+  ['staff',1,1,'act','Team works it','Assign, priority, status, reply, internal notes.','PATCH /api/support/tickets/:id'],
+  ['closed',2,1,'st','closed','Client message → 409 TICKET_CLOSED.'],
+  ['res',3,1,'st','resolved',''],
+  ['p6',0,2,'fut','SLA & escalation (P6)','SLA timers, escalation, attachments, AI drafts from approved KB.',null,2],
+ ],
+ edges:[['new','open'],['new','evt'],['open','prog'],['prog','wait'],['wait','res'],['res','closed'],['wait','open','client replies'],['staff','prog']]},
+
+chat:{title:'Public chat & knowledge', tag:'/posteingang', sub:'Answers come only from approved knowledge entries.',
+ nodes:[
+  ['vis',0,0,'act','Visitor chat','tr/de/en. 20 requests/min per IP, 40 messages per conversation.','POST /api/chat'],
+  ['kb',1,0,'data','Knowledge base','knowledge_base_entries, approved only.'],
+  ['hit',2,0,'sys','Answer','Match → reply with sources.'],
+  ['tg',0,1,'stop','Telegram entry','Bot paused.'],
+  ['miss',1,1,'st','wartet-auf-uns','No match → fallback reply, waits for the team.'],
+  ['inbox',2,1,'act','Team inbox','Reply, close, reopen.'],
+  ['prom',2,2,'gate','Promote to KB','New Q&A block, release needs kb.publish (FREIGABEN 1).'],
+ ],
+ edges:[['vis','kb'],['kb','hit','match'],['kb','miss','no match','neg'],['miss','inbox'],['inbox','prom'],['prom','kb','released']]},
+
+daily:{title:'Daily run · 06:30 UTC', tag:'/api/cron/agenten', sub:'200 when every step succeeds, 500 if any fails. Same body either way.',
+ nodes:[
+  ['trig',0,0,'sys','Trigger','External cron with CRON_SECRET, or TH_SCHEDULER=on. Never both.'],
+  ['queue',1,0,'sys','1 · Queue','Admin-triggered long agents waiting in agent_runs.'],
+  ['agents',2,0,'agt','2 · Agents','controller → outreach-pilot → projekt-manager → media-buyer → customer-success → calling-agent'],
+  ['vert',3,0,'sys','3 · vertraege','signed → active, active → ended, renewal tasks.'],
+  ['nach',4,0,'sys','4 · nachfassen','Lead nudges.'],
+  ['notify',0,1,'stop','07:00 UTC notify','Telegram daily summary. Muted: no chat ids set.'],
+  ['res',1,1,'data','Run result','Per-step log with counts and errors.'],
+  ['faell',2,1,'sys','8 · faelligkeit','task.due_soon / task.overdue.'],
+  ['brief',3,1,'sys','7 · briefing-erinnerungen','Briefing reminder emails.'],
+  ['zahl',4,1,'sys','5 · zahlungen','Due-soon notices, overdue tasks.'],
+  ['dat',4,2,'sys','6 · dateien','Purge unconfirmed uploads > 24 h.'],
+ ],
+ edges:[['trig','queue'],['queue','agents'],['agents','vert'],['vert','nach'],['nach','zahl'],['zahl','dat'],['dat','brief'],['brief','faell'],['faell','res']]},
+
+agents:{title:'Agent roster', tag:'11 agents', sub:'Agents write drafts and internal work; anything outward needs an approval.',
+ nodes:[
+  ['trig',0,0,'act','Admin trigger','Short agents run now in plan mode; long ones are queued. Already running → 409.','POST /api/admin/trigger'],
+  ['runner',1,0,'sys','AgentRunner','agent_runs log, actor = agent. apply only in the daily run.'],
+  ['bus',2,0,'data','Agent bus','Messages agent ↔ leadership (agent.message_to_leadership).'],
+  ['budget',3,0,'gate','Budget caps','Caps in budget.constants.ts. Spend only with an approved spend approval.'],
+  ['ctrl',0,1,'agt','controller','Daily snapshot into daily_metrics, reports the situation.'],
+  ['pm',1,1,'agt','projekt-manager','Detects jams before deadlines slip.'],
+  ['cs',2,1,'agt','customer-success','Runs in the daily run.'],
+  ['mb',3,1,'agt','media-buyer','Runs only campaigns with a valid ad_campaign.start approval.'],
+  ['lh',0,2,'agt','lead-hunter','Long run; feeds the lead pool.'],
+  ['ca',1,2,'agt','calling-agent','Call list only.'],
+  ['sb',2,2,'fut','site-builder','Scaffold: demo_sites table exists, generator missing.'],
+  ['op',3,2,'stop','outreach-pilot','Stopped.'],
+  ['cd',0,3,'fut','creative-director','Look bible + shot list with prompts. Production in P5.'],
+  ['sm',1,3,'fut','social-media','Designed, not built.'],
+  ['hf',2,3,'fut','higgsfield-editor','Designed, not built.'],
+ ],
+ edges:[['trig','runner'],['runner','bus'],['mb','budget','spend']]},
+
+notify:{title:'Notifications & dashboard', tag:'/dashboard · /heute', sub:'Notifications come from outbox events, so they appear after the next worker pass.',
+ nodes:[
+  ['src',0,0,'evt','Notification types','task.assigned · due_soon · overdue · agent.run_failed · agent.message_to_leadership · outbox.dead · approvals · deliverables · tickets'],
+  ['bell',1,0,'act','In-app bell','Title already in the account’s language.','GET /api/me/notifications'],
+  ['tg',2,0,'stop','Telegram copy','If telegram_user_id and bot token are set.'],
+  ['dash',0,1,'act','Role dashboard','Widgets by permission, sorted by items needing action today.','GET /api/me/dashboard'],
+  ['w',1,1,'data','Widgets','attention · my_tasks · my_approvals · my_followups · team_followups · agent_health · company_pulse · project_tasks · payments_due · blocked_projects'],
+  ['heute',2,1,'act','Today view','Leadership day view: company pulse, items "Bei der Leitung".','/heute'],
+ ],
+ edges:[['src','bell'],['src','tg'],['bell','dash'],['dash','w']]},
+
+roadmap:{title:'Roadmap & open decisions', tag:'P0–P6', sub:'Built phases are in QA on staging; P5 and P6 are planned.',
+ nodes:[
+  ['p0',0,0,'st','P0 · Stabilise','Replayable migrations, test DB, container, secrets.'],
+  ['p1',1,0,'st','P1 · Identity & foundation','Accounts, sessions, RBAC, 2FA, outbox, tasks, approvals, dashboard.'],
+  ['p2',2,0,'st','P2 · CRM & sales','Companies, deals, offers, follow-ups, timelines, contracts. In QA.'],
+  ['p3',0,1,'st','P3 · Projects & fulfillment','Templates, tasks, payments, briefing, deliverables, vault. In QA.'],
+  ['p4',1,1,'st','P4 · Client hub','Portal, RLS, files, tickets. In QA.'],
+  ['fr',2,1,'gate','Leadership decisions','FREIGABEN 0–11: outreach restart, chat blocks, phone ads, Meta/Google, imprint, support mailbox …'],
+  ['p5',0,2,'fut','P5 · Marketing, content & AI','Campaigns, content calendar, assets, agent_jobs with budgets and autonomy levels.'],
+  ['p6',1,2,'fut','P6 · Academy, support & controlling','Knowledge + courses, SLA tickets, people, invoices and ledger.'],
+ ],
+ edges:[['p0','p1'],['p1','p2'],['p2','p3'],['p3','p4'],['p4','p5'],['p5','p6']]},
+};
+
+/* links between areas: full ids zone.node */
+const CROSS = [
+  ['request.tx','events.outbox','outbox row'],
+  ['events.eff2','approvals.req','request'],
+  ['events.eff1','notify.src','notifications'],
+  ['events.eff3','agents.runner','queued run'],
+  ['access.scopes','request.policy','permissions'],
+  ['approvals.pending','notify.src','approval.requested'],
+  ['intake.pool','leads.neu','stage neu'],
+  ['intake.fc','leads.wv','follow-up task'],
+  ['intake.vorf','outreach.pilot','only "frei"'],
+  ['leads.kunde','crm.link','link company'],
+  ['leads.term','deals.create','opportunity'],
+  ['crm.company','deals.create','company'],
+  ['contracts.draft','deals.od','offer wraps contract'],
+  ['contracts.special','approvals.req','contract.price · finance'],
+  ['contracts.active','crm.client','status → client'],
+  ['deals.wonEvt','projcreate.trig','deal.won'],
+  ['contracts.signed','projcreate.trig','contract.signed / activated'],
+  ['projcreate.create','projlife.setup','status setup'],
+  ['projcreate.plan','payments.planned','instalments'],
+  ['briefing.evt','projlife.ready','setup → ready'],
+  ['deliverables.submit','approvals.req','deliverable.share'],
+  ['updates.submit','approvals.req','update.release'],
+  ['deliverables.shared','portalux.deliv','visible to client'],
+  ['portalux.deliv','deliverables.cdec','decision'],
+  ['updates.relS','portalux.upd','released'],
+  ['payments.portal','portalux.pay','with amounts'],
+  ['crm.inv','portalaccess.inv','invite'],
+  ['portalaccess.rls','portalux.dash','every portal query'],
+  ['portalux.brief','briefing.client','fill in'],
+  ['portalux.cred','collab.hand','hand over'],
+  ['portalux.msg','collab.msg','thread'],
+  ['portalux.tick','support.new','open ticket'],
+  ['daily.vert','contracts.active','activate / end'],
+  ['daily.nach','leads.nudge','nudges'],
+  ['daily.zahl','payments.daily','reminders'],
+  ['daily.dat','collab.clean','cleanup'],
+  ['daily.brief','briefing.remind','reminders'],
+  ['daily.faell','notify.src','due / overdue'],
+  ['daily.agents','agents.runner','runs'],
+  ['agents.mb','approvals.req','ad_campaign.start · spend'],
+  ['projlife.blocker','notify.w','blocked_projects'],
+];
+
+/* ---------- build ---------- */
+const NODE_W = 204, GAP_X = 34, GAP_Y = 46, PAD = 26, HEAD = 78, ZONE_GAP = 70, BAND_GAP = 90, BAND_LABEL = 70, ORIGIN = 80;
+const world = document.getElementById('world'), svg = document.getElementById('edges');
+const edgeG = document.getElementById('edgeG'), labelG = document.getElementById('labelG');
+const nodes = {}; const edges = []; const zoneEls = {}; const zoneBox = {};
+const esc = s => String(s ?? '');
+
+function buildNodes(){
+  for (const [zid, z] of Object.entries(ZONES)){
+    const ze = document.createElement('div'); ze.className = 'zone'; ze.dataset.zone = zid;
+    ze.innerHTML = `<div class="zone-h"><span class="zone-tag">${esc(z.tag)}</span><h2>${esc(z.title)}</h2><p>${esc(z.sub)}</p></div>`;
+    world.insertBefore(ze, svg); zoneEls[zid] = ze;
+    for (const n of z.nodes){
+      const [id, c, r, k, t, d, code, span, jump] = n;
+      const fid = zid + '.' + id;
+      const el = document.createElement('div');
+      el.className = 'node k-' + k; el.dataset.id = fid; el.tabIndex = -1;
+      const s = span || 1; el.style.width = (s * NODE_W + (s - 1) * GAP_X) + 'px';
+      el.innerHTML = `<div class="kl"><span>${KINDS[k].label}</span></div><div class="nt">${t}</div>` +
+        (d ? `<div class="nd">${d}</div>` : '') + (code ? `<code>${code}</code>` : '') +
+        (jump ? `<div class="jump">open area →</div>` : '');
+      world.appendChild(el);
+      nodes[fid] = {id: fid, zone: zid, c, r, k, t, d, code, span: s, jump, el, x: 0, y: 0, w: 0, h: 0};
+    }
+    for (const [a, b, label, style] of z.edges) edges.push({a: zid + '.' + a, b: zid + '.' + b, label: label || '', style: style || ''});
+  }
+  for (const [a, b, label] of CROSS) edges.push({a, b, label, style: 'cross'});
+}
+
+function layout(){
+  /* per zone: measure row heights, place nodes */
+  for (const zid of Object.keys(ZONES)){
+    const zn = Object.values(nodes).filter(n => n.zone === zid);
+    const cols = Math.max(...zn.map(n => n.c + n.span));
+    const rows = Math.max(...zn.map(n => n.r)) + 1;
+    const rowH = Array(rows).fill(0);
+    zn.forEach(n => { n.w = n.el.offsetWidth; n.h = n.el.offsetHeight; rowH[n.r] = Math.max(rowH[n.r], n.h); });
+    const headH = Math.max(HEAD, zoneEls[zid].querySelector('.zone-h').offsetHeight + 34);
+    const rowY = []; let acc = headH;
+    for (let i = 0; i < rows; i++){ rowY.push(acc); acc += rowH[i] + GAP_Y; }
+    zn.forEach(n => { n.rx = PAD + n.c * (NODE_W + GAP_X); n.ry = rowY[n.r] + (rowH[n.r] - n.h) / 2; });
+    zoneBox[zid] = {w: PAD * 2 + cols * NODE_W + (cols - 1) * GAP_X, h: acc - GAP_Y + PAD};
+  }
+  /* bands */
+  let y = ORIGIN, maxW = 0;
+  world.querySelectorAll('.band-label').forEach(e => e.remove());
+  BANDS.forEach(b => {
+    const lab = document.createElement('div'); lab.className = 'band-label'; lab.textContent = b.title;
+    lab.style.left = ORIGIN + 'px'; lab.style.top = y + 'px'; world.insertBefore(lab, world.firstChild);
+    y += BAND_LABEL;
+    let x = ORIGIN, bh = 0;
+    b.zones.forEach(zid => {
+      const zb = zoneBox[zid]; zb.x = x; zb.y = y; zb.band = b.title;
+      Object.assign(zoneEls[zid].style, {left: x + 'px', top: y + 'px', width: zb.w + 'px', height: zb.h + 'px'});
+      x += zb.w + ZONE_GAP; bh = Math.max(bh, zb.h);
+    });
+    maxW = Math.max(maxW, x - ZONE_GAP);
+    y += bh + BAND_GAP;
+  });
+  for (const n of Object.values(nodes)){
+    const zb = zoneBox[n.zone]; n.x = zb.x + n.rx; n.y = zb.y + n.ry;
+    n.el.style.left = n.x + 'px'; n.el.style.top = n.y + 'px';
+  }
+  WORLD.w = maxW + ORIGIN; WORLD.h = y;
+  svg.setAttribute('width', WORLD.w); svg.setAttribute('height', WORLD.h);
+  world.style.width = WORLD.w + 'px'; world.style.height = WORLD.h + 'px';
+}
+
+const NS = 'http://www.w3.org/2000/svg';
+function markers(){
+  const defs = svg.querySelector('defs'); defs.innerHTML = '';
+  const m = {'': 'var(--edge)', evt: 'var(--evt-c)', gate: 'var(--gate-c)', cron: 'var(--st-c)', neg: 'var(--stop-c)', cross: 'var(--accent)'};
+  for (const [k, col] of Object.entries(m)){
+    const mk = document.createElementNS(NS, 'marker');
+    mk.setAttribute('id', 'ar-' + (k || 'flow')); mk.setAttribute('viewBox', '0 0 10 10'); mk.setAttribute('refX', '9'); mk.setAttribute('refY', '5');
+    mk.setAttribute('markerWidth', k === 'cross' ? '5' : '7'); mk.setAttribute('markerHeight', k === 'cross' ? '5' : '7'); mk.setAttribute('orient', 'auto-start-reverse');
+    const p = document.createElementNS(NS, 'path'); p.setAttribute('d', 'M0,0 L10,5 L0,10 z'); p.style.fill = col;
+    mk.appendChild(p); defs.appendChild(mk);
+  }
+}
+
+function port(n, side){
+  const cx = n.x + n.w / 2, cy = n.y + n.h / 2;
+  if (side === 'r') return [n.x + n.w, cy, 1, 0];
+  if (side === 'l') return [n.x, cy, -1, 0];
+  if (side === 'b') return [cx, n.y + n.h, 0, 1];
+  return [cx, n.y, 0, -1];
+}
+function route(A, B, cross){
+  const ax = A.x + A.w / 2, ay = A.y + A.h / 2, bx = B.x + B.w / 2, by = B.y + B.h / 2;
+  const dx = bx - ax, dy = by - ay;
+  let sa, sb;
+  const sameRow = Math.abs(dy) < Math.min(A.h, B.h) / 2;
+  if (sameRow && dx < 0 && !cross){ sa = 'b'; sb = 'b'; }              /* backward in a row: loop below */
+  else if (Math.abs(dx) > Math.abs(dy) * 0.9){ sa = dx > 0 ? 'r' : 'l'; sb = dx > 0 ? 'l' : 'r'; }
+  else { sa = dy > 0 ? 'b' : 't'; sb = dy > 0 ? 't' : 'b'; }
+  const [x1, y1, ux1, uy1] = port(A, sa), [x2, y2, ux2, uy2] = port(B, sb);
+  const dist = Math.hypot(x2 - x1, y2 - y1);
+  let k = Math.max(36, Math.min(dist * 0.45, cross ? 600 : 160));
+  if (sa === 'b' && sb === 'b') k = Math.max(50, Math.abs(dx) * 0.25);
+  const c1x = x1 + ux1 * k, c1y = y1 + uy1 * k, c2x = x2 + ux2 * k, c2y = y2 + uy2 * k;
+  const t = .5, mt = 1 - t;
+  const mx = mt*mt*mt*x1 + 3*mt*mt*t*c1x + 3*mt*t*t*c2x + t*t*t*x2;
+  const my = mt*mt*mt*y1 + 3*mt*mt*t*c1y + 3*mt*t*t*c2y + t*t*t*y2;
+  return {d: `M${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`, mx, my};
+}
+
+function drawEdges(){
+  edgeG.innerHTML = ''; labelG.innerHTML = '';
+  for (const e of edges){
+    const A = nodes[e.a], B = nodes[e.b];
+    if (!A || !B){ console.warn('missing edge end', e); continue; }
+    const r = route(A, B, e.style === 'cross');
+    const p = document.createElementNS(NS, 'path');
+    p.setAttribute('d', r.d); p.setAttribute('class', 'e ' + e.style);
+    p.setAttribute('marker-end', `url(#ar-${e.style || 'flow'})`);
+    edgeG.appendChild(p); e.path = p;
+    if (e.label){
+      const tx = document.createElementNS(NS, 'text');
+      tx.setAttribute('x', r.mx); tx.setAttribute('y', r.my + 3.5); tx.setAttribute('text-anchor', 'middle');
+      tx.setAttribute('class', 'el ' + e.style); tx.textContent = e.label;
+      labelG.appendChild(tx); e.text = tx;
+    }
+  }
+}
+
+/* ---------- view transform ---------- */
+const WORLD = {w: 0, h: 0};
+const vp = document.getElementById('viewport');
+const view = {x: 0, y: 0, s: 1};
+const MIN_S = 0.06, MAX_S = 2.2;
+let raf = 0;
+function apply(){
+  world.style.transform = `translate(${view.x}px,${view.y}px) scale(${view.s})`;
+  vp.style.backgroundSize = `${24 * view.s}px ${24 * view.s}px`;
+  vp.style.backgroundPosition = `${view.x}px ${view.y}px`;
+  world.classList.toggle('far', view.s < 0.5);
+  world.classList.toggle('vfar', view.s < 0.2);
+  document.getElementById('zoomLabel').textContent = Math.round(view.s * 100) + '%';
+  if (!raf) raf = requestAnimationFrame(() => { raf = 0; drawMini(); });
+}
+function zoomAt(f, cx, cy){
+  const s = Math.min(MAX_S, Math.max(MIN_S, view.s * f));
+  const k = s / view.s;
+  view.x = cx - (cx - view.x) * k; view.y = cy - (cy - view.y) * k; view.s = s; apply();
+}
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let anim = 0;
+function flyTo(tx, ty, ts){
+  cancelAnimationFrame(anim);
+  if (reduce){ Object.assign(view, {x: tx, y: ty, s: ts}); apply(); return; }
+  const fx = view.x, fy = view.y, fs = view.s, t0 = performance.now(), D = 520;
+  const step = now => {
+    const t = Math.min(1, (now - t0) / D), e = 1 - Math.pow(1 - t, 3);
+    /* interpolate scale in log space so zoom feels even */
+    const s = Math.exp(Math.log(fs) + (Math.log(ts) - Math.log(fs)) * e);
+    const wx = (vp.clientWidth / 2 - fx) / fs + ((vp.clientWidth / 2 - tx) / ts - (vp.clientWidth / 2 - fx) / fs) * e;
+    const wy = (vp.clientHeight / 2 - fy) / fs + ((vp.clientHeight / 2 - ty) / ts - (vp.clientHeight / 2 - fy) / fs) * e;
+    view.s = s; view.x = vp.clientWidth / 2 - wx * s; view.y = vp.clientHeight / 2 - wy * s; apply();
+    if (t < 1) anim = requestAnimationFrame(step);
+  };
+  anim = requestAnimationFrame(step);
+}
+function sideInset(){ const sd = document.getElementById('side'); return (!sd.hidden && innerWidth > 760) ? sd.offsetWidth + 24 : 0; }
+function fitBox(x, y, w, h, maxS = 1.2, pad = 40){
+  const left = sideInset(), W = vp.clientWidth - left - pad * 2, H = vp.clientHeight - pad * 2;
+  const s = Math.min(maxS, Math.max(MIN_S, Math.min(W / w, H / h)));
+  return {x: left + pad + (W - w * s) / 2 - x * s, y: pad + (H - h * s) / 2 - y * s, s};
+}
+function fitAll(animate = true){ const f = fitBox(0, 0, WORLD.w, WORLD.h, 1); animate ? flyTo(f.x, f.y, f.s) : (Object.assign(view, f), apply()); }
+function flyZone(zid){ const z = zoneBox[zid]; const f = fitBox(z.x, z.y, z.w, z.h, 1.1, 30); flyTo(f.x, f.y, f.s); }
+function flyNode(n){ const s = Math.max(view.s, 0.95); const left = sideInset();
+  flyTo(left + (vp.clientWidth - left) / 2 - (n.x + n.w / 2) * s, vp.clientHeight / 2 - (n.y + n.h / 2) * s, s); }
+
+/* pointer: pan + pinch, click detection */
+const pts = new Map(); let pinch = null, moved = 0, downTarget = null;
+vp.addEventListener('pointerdown', e => {
+  if (e.target.closest('#side, #info, #mini')) return;
+  vp.setPointerCapture(e.pointerId); pts.set(e.pointerId, {x: e.clientX, y: e.clientY});
+  moved = 0; downTarget = e.target.closest('.node');
+  if (pts.size === 2){ const [a, b] = [...pts.values()]; pinch = {d: Math.hypot(a.x - b.x, a.y - b.y)}; }
+  vp.classList.add('dragging');
+});
+vp.addEventListener('pointermove', e => {
+  if (!pts.has(e.pointerId)) return;
+  const prev = pts.get(e.pointerId), cur = {x: e.clientX, y: e.clientY};
+  pts.set(e.pointerId, cur);
+  if (pts.size === 2 && pinch){
+    const [a, b] = [...pts.values()]; const d = Math.hypot(a.x - b.x, a.y - b.y);
+    const r = vp.getBoundingClientRect();
+    zoomAt(d / pinch.d, (a.x + b.x) / 2 - r.left, (a.y + b.y) / 2 - r.top); pinch.d = d; moved += 10; return;
+  }
+  const dx = cur.x - prev.x, dy = cur.y - prev.y; moved += Math.abs(dx) + Math.abs(dy);
+  view.x += dx; view.y += dy; apply();
+});
+function up(e){
+  if (!pts.has(e.pointerId)) return;
+  pts.delete(e.pointerId); if (pts.size < 2) pinch = null;
+  if (!pts.size){
+    vp.classList.remove('dragging');
+    if (moved < 6){ downTarget ? selectNode(nodes[downTarget.dataset.id]) : clearFocus(); }
+  }
+}
+vp.addEventListener('pointerup', up); vp.addEventListener('pointercancel', up);
+vp.addEventListener('wheel', e => {
+  if (e.target.closest('#side, #info')) return;
+  e.preventDefault();
+  const r = vp.getBoundingClientRect();
+  const trackpadPan = !e.ctrlKey && e.deltaMode === 0 && (Math.abs(e.deltaX) > 0 || (Math.abs(e.deltaY) < 40 && !Number.isInteger(e.deltaY)));
+  if (trackpadPan){ view.x -= e.deltaX; view.y -= e.deltaY; apply(); return; }
+  const dy = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY;
+  zoomAt(Math.exp(-dy * (e.ctrlKey ? 0.01 : 0.0015)), e.clientX - r.left, e.clientY - r.top);
+}, {passive: false});
+
+addEventListener('keydown', e => {
+  if (e.target.matches('input')) { if (e.key === 'Escape') e.target.blur(); return; }
+  const c = [vp.clientWidth / 2, vp.clientHeight / 2];
+  if (e.key === '+' || e.key === '=') zoomAt(1.25, ...c);
+  else if (e.key === '-' || e.key === '_') zoomAt(0.8, ...c);
+  else if (e.key === '0') fitAll();
+  else if (e.key === 'Escape') clearFocus();
+  else if (e.key.startsWith('Arrow')){ const st = 80; view.x += e.key === 'ArrowLeft' ? st : e.key === 'ArrowRight' ? -st : 0; view.y += e.key === 'ArrowUp' ? st : e.key === 'ArrowDown' ? -st : 0; apply(); }
+  else return;
+  e.preventDefault();
+});
+document.getElementById('btnIn').onclick = () => zoomAt(1.3, vp.clientWidth / 2, vp.clientHeight / 2);
+document.getElementById('btnOut').onclick = () => zoomAt(1 / 1.3, vp.clientWidth / 2, vp.clientHeight / 2);
+document.getElementById('btnFit').onclick = () => fitAll();
+document.getElementById('btn100').onclick = () => { const cx = vp.clientWidth / 2, cy = vp.clientHeight / 2; zoomAt(1 / view.s, cx, cy); };
+document.getElementById('btnSide').onclick = e => { const sd = document.getElementById('side'); sd.hidden = !sd.hidden; e.currentTarget.setAttribute('aria-pressed', String(!sd.hidden)); };
+document.getElementById('tCross').onchange = e => world.classList.toggle('hide-cross', !e.target.checked);
+document.getElementById('tLabels').onchange = e => world.classList.toggle('hide-labels', !e.target.checked);
+
+/* ---------- focus / info ---------- */
+const info = document.getElementById('info');
+function clearFocus(){
+  world.classList.remove('focus');
+  world.querySelectorAll('.hl, .sel, .match').forEach(x => x.classList.remove('hl', 'sel', 'match'));
+  info.hidden = true;
+}
+function selectNode(n){
+  if (!n) return;
+  if (n.jump){ clearFocus(); flyZone(n.jump); return; }
+  clearFocus(); world.classList.add('focus');
+  n.el.classList.add('hl', 'sel');
+  const inc = [], out = [];
+  for (const e of edges){
+    if (e.a === n.id || e.b === n.id){
+      e.path?.classList.add('hl'); e.text?.classList.add('hl');
+      const other = nodes[e.a === n.id ? e.b : e.a]; other.el.classList.add('hl');
+      (e.a === n.id ? out : inc).push({other, label: e.label});
+    }
+  }
+  const z = ZONES[n.zone];
+  const li = arr => arr.length ? `<ul>${arr.map(o => `<li><button data-go="${o.other.id}">${o.other.t}${o.label ? ` <small>· ${o.label}</small>` : ''}${o.other.zone !== n.zone ? ` <small>· ${ZONES[o.other.zone].title}</small>` : ''}</button></li>`).join('')}</ul>` : '<p class="iz">None</p>';
+  info.innerHTML = `<button class="btn icon close" aria-label="Close">×</button>
+    <div class="ik" style="color:var(--${n.k}-c)">${KINDS[n.k].label}</div>
+    <h4>${n.t}</h4><div class="iz">${z.title} · ${zoneBox[n.zone].band}</div>
+    ${n.d ? `<p>${n.d}</p>` : ''}${n.code ? `<p><code>${n.code}</code></p>` : ''}
+    <div class="ih">Comes from</div>${li(inc)}<div class="ih">Leads to</div>${li(out)}`;
+  info.hidden = false;
+  info.querySelector('.close').onclick = clearFocus;
+  info.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { const t = nodes[b.dataset.go]; selectNode(t); flyNode(t); });
+}
+
+/* ---------- side panel ---------- */
+function buildSide(){
+  const zl = document.getElementById('zlist');
+  zl.innerHTML = BANDS.map(b => `<div class="bandh">${b.title}</div>` + b.zones.map(z =>
+    `<button data-z="${z}">${ZONES[z].title} <small>· ${ZONES[z].nodes.length} steps</small></button>`).join('')).join('');
+  zl.querySelectorAll('[data-z]').forEach(b => b.onclick = () => { clearFocus(); flyZone(b.dataset.z); });
+  const lg = document.getElementById('legend');
+  lg.innerHTML = Object.entries(KINDS).filter(([k]) => k !== 'ov').map(([k, v]) => `<div class="lg"><span class="sw k-${k}"></span>${v.label}</div>`).join('');
+  const inp = document.getElementById('search'), res = document.getElementById('results');
+  const strip = s => String(s || '').replace(/<[^>]+>/g, '').replace(/&[a-z]+;/g, ' ').toLowerCase();
+  const run = () => {
+    const q = inp.value.trim().toLowerCase(); world.querySelectorAll('.match').forEach(x => x.classList.remove('match'));
+    if (q.length < 2){ res.innerHTML = ''; return []; }
+    const hits = Object.values(nodes).filter(n => (strip(n.t) + ' ' + strip(n.d) + ' ' + strip(n.code)).includes(q));
+    hits.forEach(n => n.el.classList.add('match'));
+    res.innerHTML = hits.slice(0, 14).map(n => `<button data-go="${n.id}">${n.t} <small>· ${ZONES[n.zone].title}</small></button>`).join('') +
+      (hits.length > 14 ? `<small style="padding:4px 6px;display:block">+${hits.length - 14} more highlighted on the canvas</small>` : '') +
+      (!hits.length ? `<small style="padding:4px 6px;display:block">No step matches "${inp.value.replace(/[<>&]/g, '')}".</small>` : '');
+    res.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { const n = nodes[b.dataset.go]; selectNode(n); flyNode(n); });
+    return hits;
+  };
+  inp.addEventListener('input', run);
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter'){ const h = run(); if (h[0]){ selectNode(h[0]); flyNode(h[0]); } } });
+}
+
+/* ---------- minimap ---------- */
+const mc = document.getElementById('miniC'), mx = mc.getContext('2d');
+let mm = {s: 1, ox: 0, oy: 0};
+function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+function drawMini(){
+  if (!WORLD.w) return;
+  const dpr = devicePixelRatio || 1, W = 220, H = Math.round(220 * WORLD.h / WORLD.w);
+  const Hc = Math.min(180, Math.max(90, H));
+  if (mc.width !== W * dpr || mc.height !== Hc * dpr){ mc.width = W * dpr; mc.height = Hc * dpr; mc.style.width = W + 'px'; mc.style.height = Hc + 'px'; }
+  mx.setTransform(dpr, 0, 0, dpr, 0, 0); mx.clearRect(0, 0, W, Hc);
+  const s = Math.min((W - 12) / WORLD.w, (Hc - 12) / WORLD.h); mm = {s, ox: (W - WORLD.w * s) / 2, oy: (Hc - WORLD.h * s) / 2};
+  mx.fillStyle = css('--zone-line');
+  for (const z of Object.values(zoneBox)) mx.fillRect(mm.ox + z.x * s, mm.oy + z.y * s, Math.max(1, z.w * s), Math.max(1, z.h * s));
+  const vx = -view.x / view.s, vy = -view.y / view.s, vw = vp.clientWidth / view.s, vh = vp.clientHeight / view.s;
+  mx.strokeStyle = css('--accent'); mx.lineWidth = 1.5;
+  mx.strokeRect(mm.ox + vx * s, mm.oy + vy * s, vw * s, vh * s);
+}
+let miniDrag = false;
+function miniGo(e){
+  const r = mc.getBoundingClientRect();
+  const wx = (e.clientX - r.left - mm.ox) / mm.s, wy = (e.clientY - r.top - mm.oy) / mm.s;
+  view.x = vp.clientWidth / 2 - wx * view.s; view.y = vp.clientHeight / 2 - wy * view.s; apply();
+}
+mc.addEventListener('pointerdown', e => { miniDrag = true; mc.setPointerCapture(e.pointerId); miniGo(e); e.stopPropagation(); });
+mc.addEventListener('pointermove', e => { if (miniDrag) miniGo(e); });
+mc.addEventListener('pointerup', () => miniDrag = false);
+
+/* ---------- boot ---------- */
+buildNodes(); buildSide(); markers();
+function relayout(){ layout(); drawEdges(); }
+relayout(); fitAll(false);
+(document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => { relayout(); fitAll(false); });
+matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', drawMini);
+new MutationObserver(drawMini).observe(document.documentElement, {attributes: true, attributeFilter: ['data-theme']});
+addEventListener('resize', () => drawMini());
+</script>
+</body>
+</html>
